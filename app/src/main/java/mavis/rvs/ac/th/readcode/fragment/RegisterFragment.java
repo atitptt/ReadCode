@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 
 import mavis.rvs.ac.th.readcode.MainActivity;
 import mavis.rvs.ac.th.readcode.R;
+import mavis.rvs.ac.th.readcode.utility.MyConstant;
+import mavis.rvs.ac.th.readcode.utility.PostUserToServer;
 import mavis.rvs.ac.th.readcode.utility.myAlert;
 
 /**
@@ -59,6 +62,33 @@ public class RegisterFragment extends Fragment {
                 } else {
                 }
 //                  No Space
+                try {
+                    MyConstant myConstant = new MyConstant();
+                    PostUserToServer postUserToServer = new PostUserToServer(getActivity());
+                    postUserToServer.execute(nameString,userString,passwordString,
+                            myConstant.getUrlPostUserString());
+                    String result = postUserToServer.get();
+                    Log.d("22MarchV1", "Result==>" + result);
+
+                    if (Boolean.parseBoolean(result)) {
+
+                        getActivity().getSupportFragmentManager().popBackStack();
+
+                    } else {
+
+                        myAlert namMyAlert = new myAlert(getActivity());
+                        namMyAlert.myDialog("Cannot Post User",
+                                "Please Try Again");
+
+                    }
+
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
 
             }
